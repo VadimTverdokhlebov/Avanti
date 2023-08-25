@@ -7,8 +7,11 @@ export interface IUser {
 
 export default class User implements IUser {
   firstName;
+
   lastName;
+
   email;
+
   password;
 
   constructor(firstName: string, lastName: string, email: string, password: string) {

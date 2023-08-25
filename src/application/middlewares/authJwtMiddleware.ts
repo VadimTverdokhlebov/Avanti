@@ -1,10 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import config from '../../config';
 import ApiError from '../../exception/ApiError';
 
+export type UserPayload = { 
+  id: string,
+  email: string
+};
+
 export interface ICustomRequest extends Request {
-  user: string | JwtPayload;
+  user: UserPayload;
 }
 
 export default function authJwtMiddleware(req: Request, res: Response, next: NextFunction) {
@@ -14,7 +19,7 @@ export default function authJwtMiddleware(req: Request, res: Response, next: Nex
   try {
     const { authorization } = req.headers;
 
-    if (authorization === undefined) {
+    if (!authorization) {
       throw ApiError.unauthorization();
     }
 
@@ -24,11 +29,10 @@ export default function authJwtMiddleware(req: Request, res: Response, next: Nex
       throw ApiError.unauthorization();
     }
 
-    const decodetData = jwt.verify(token, config.user.secretKey);
+    const decodetData = <UserPayload>jwt.verify(token, config.user.secretKey);
     (req as ICustomRequest).user = decodetData;
     return next();
   } catch (error) {
-    console.log(error);
     return next(error);
   }
 }

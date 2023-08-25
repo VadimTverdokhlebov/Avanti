@@ -8,7 +8,7 @@ export default class WordController {
       const { paginationSettings }: { paginationSettings: IPaginationSettings } = req.body;
       const words = await WordService.paginateWord(paginationSettings);
 
-      return res.json({ status: 'getWord ok', word: words, });
+      return res.json({ status: 'getWord ok', word: words });
     } catch (error) {
       return next(error);
     }
@@ -19,7 +19,7 @@ export default class WordController {
       const { insertWords }: { insertWords: IWord[] } = req.body;
       const word = await WordService.insertWords(insertWords);
 
-      return res.json({ status: 'insertWord ok', word, });
+      return res.json({ status: 'insertWord ok', word });
     } catch (error) {
       return next(error);
     }

@@ -16,8 +16,8 @@ export function generateAccessToken(id: number, email: string) {
   return jwt.sign(payload, secretKey, { expiresIn: '24h' });
 }
 
-export function getUserId(token: string) {
+export function getUser(token: string) {
   const decodetData = <IDecodetData>jwt.verify(token, config.user.secretKey);
 
-  return decodetData.id;
+  return decodetData;
 }

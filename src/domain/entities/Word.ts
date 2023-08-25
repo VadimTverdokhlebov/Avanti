@@ -7,8 +7,11 @@ export interface IWord {
 
 export default class Word implements IWord {
   source;
+
   pos;
+
   posTranslation;
+
   translation;
 
   constructor(source: string, pos: string, posTranslation: string, translation: string) {
