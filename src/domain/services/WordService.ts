@@ -17,7 +17,7 @@ export interface IPaginationSettings {
 }
 
 export default class WordService {
-    static createWord(source: string, pos: string, posTranslation: string, translation: string) {
+    static createWord(source: string, pos: string | undefined, posTranslation: string | undefined, translation: string) {
         const word = new Word(source, pos, posTranslation, translation);
         return word;
     }

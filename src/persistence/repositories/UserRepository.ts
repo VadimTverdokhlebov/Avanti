@@ -1,4 +1,4 @@
-import UserModel from '../models/UserModel';
+import UserModel from '../models/userModel';
 import { IUser } from '../../domain/entities/User';
 
 export default class UserRepository {

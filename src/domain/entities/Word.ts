@@ -14,7 +14,7 @@ export default class Word implements IWord {
 
   translation;
 
-  constructor(source: string, pos: string, posTranslation: string, translation: string) {
+  constructor(source: string, pos: string | undefined, posTranslation: string | undefined, translation: string) {
     this.source = source;
     this.pos = pos;
     this.posTranslation = posTranslation;

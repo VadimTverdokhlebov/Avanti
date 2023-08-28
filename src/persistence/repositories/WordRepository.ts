@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import WordModel from '../models/WordModel';
+import WordModel from '../models/wordModel';
 import { IWord } from '../../domain/entities/Word';
 
 export interface ISearchValue {
@@ -27,6 +27,10 @@ export default class WordRepository {
 
     static getAllWords() {
         return WordModel.find().all('words', []);
+    }
+
+    static getWords(wordsId: string[]) {
+        return WordModel.find({ _id: { $in: wordsId } });
     }
 
     static getWord(source: string) {

@@ -1,14 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { ICustomRequest, UserPayload } from '../middlewares/authJwtMiddleware';
-import WordPackService from '../../'
-interface IWordPack {
-  name: string,
-  description: string,
-  words: { 
-    wordId: string 
-  }[]
-
-}
+import WordPackService, { IWordPackData } from '../../domain/services/WordPackService';
 
 export default class WordPackController {
   static async getWordPack(req: Request, res: Response, next: NextFunction) {
@@ -21,11 +13,11 @@ export default class WordPackController {
 
   static async insertWordPack(req: Request, res: Response, next: NextFunction) {
     try {
-      const { insertWordPackData }: { insertWordPackData: IWordPack } = req.body;
+      const { insertWordPackData }:  { insertWordPackData: IWordPackData } = req.body;
       const userPayload: UserPayload = (req as ICustomRequest).user;
-      const word = await WordPackService.createWordPack(insertWordPackData);
+      const wordPack = WordPackService.createWordPack(insertWordPackData, userPayload);
 
-      return res.json({ status: 'insertWordPack ok', insertWordPackData, userPayload });
+      return res.json({ status: 'insertWordPack ok', wordPack, userPayload });
     } catch (error) {
       return next(error);
     }

@@ -4,7 +4,7 @@ import config from '../../config';
 import ApiError from '../../exception/ApiError';
 
 export type UserPayload = { 
-  id: string,
+  userId: string,
   email: string
 };
 
