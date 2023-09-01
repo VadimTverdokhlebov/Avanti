@@ -6,7 +6,7 @@ interface IWords {
   word: mongoose.Types.ObjectId;
 }
 
-interface IWordPack {
+export interface IWordPackModel {
   name: string;
   description?: string;
   author: mongoose.Types.ObjectId;
@@ -14,7 +14,7 @@ interface IWordPack {
 
 }
 
-const wordPackSchema = new Schema<IWordPack>({
+const wordPackSchema = new Schema<IWordPackModel>({
   name: {
     type: String,
     require: true,
@@ -39,4 +39,4 @@ wordPackSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
 
-export default mongoose.model<IWordPack>('WordPack', wordPackSchema);
+export default mongoose.model<IWordPackModel>('WordPack', wordPackSchema);

@@ -1,9 +1,22 @@
 import mongoose from 'mongoose';
-import { IUser } from '../../domain/entities/User';
 
 const { Schema } = mongoose;
 
-const userSchema = new Schema<IUser>({
+export interface IUserModel {
+  _id: mongoose.Types.ObjectId;
+  email: string;
+  hashedPassword: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+// const objectId = new mongoose.Types.ObjectId();
+
+const userSchema = new Schema<IUserModel>({
+  // _id: {
+  //   type: mongoose.Types.ObjectId,
+  //   default: () => new mongoose.Types.ObjectId(),
+  // },
   email: {
     type: String,
     unique: true,
@@ -26,4 +39,4 @@ userSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
 
-export default mongoose.model<IUser>('User', userSchema);
+export default mongoose.model<IUserModel>('User', userSchema);
