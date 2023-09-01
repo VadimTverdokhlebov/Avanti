@@ -10,14 +10,14 @@ export default class AuthController {
     try {
       
       const { firstName, lastName, email, password } = req.body;
-      const checkEmail = await UserRepository.checkEmailUser(email);
+      const checkEmail = await UserRepository.getUser(email);
       
       if (checkEmail) {
         throw ApiError.badRequest('Email already exist!');
       }
       
-      const hashPassword = await bcrypt.hash(password, 3);
-      const user = UserService.createUser(firstName, lastName, email, hashPassword);
+      const hashedPassword = await bcrypt.hash(password, 3);
+      const user = UserService.createUser({ email, hashedPassword, firstName, lastName });
 
       const savedUser = await UserRepository.createUser(user);
       const token = generateAccessToken(savedUser.id, savedUser.email);
@@ -38,7 +38,7 @@ export default class AuthController {
         throw ApiError.badRequest('The user not found!');
       }
 
-      const validPassword = await bcrypt.compare(password, user.password);
+      const validPassword = await bcrypt.compare(password, user.hashedPassword);
 
       if (!validPassword) {
         throw ApiError.badRequest('Insert incorrect password');

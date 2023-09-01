@@ -6,18 +6,10 @@ export interface IWord {
 }
 
 export default class Word implements IWord {
-  source;
-
-  pos;
-
-  posTranslation;
-
-  translation;
-
-  constructor(source: string, pos: string | undefined, posTranslation: string | undefined, translation: string) {
-    this.source = source;
-    this.pos = pos;
-    this.posTranslation = posTranslation;
-    this.translation = translation;
-  }
+  constructor(
+      public source: string,
+      public translation: string,
+      public pos: string | undefined,
+      public posTranslation: string | undefined,
+  ) {}
 }

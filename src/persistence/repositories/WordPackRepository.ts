@@ -1,7 +1,8 @@
+import { IWordPack } from '../../domain/entities/WordPack';
 import WordPackModel from '../models/wordPackModel';
 
 export default class WordPackRepository {
-    static createWord() {
-        return WordPackModel.create();
+    static createWordPack(wordPack: IWordPack) {
+        return WordPackModel.create(wordPack);
     }
 }

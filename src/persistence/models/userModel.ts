@@ -9,7 +9,7 @@ const userSchema = new Schema<IUser>({
     unique: true,
     require: true,
   },
-  password: {
+  hashedPassword: {
     type: String,
     unique: true,
     require: true,

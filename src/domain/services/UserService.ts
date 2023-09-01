@@ -1,8 +1,7 @@
-import User from '../entities/User';
+import User, { IUser } from '../entities/User';
 
 export default class UserService {
-    static createUser(firstName : string, lastName: string, email: string, hashPassword: string) {
-        const user = new User(firstName, lastName, email, hashPassword);
-        return user;
+    static createUser({ email, hashedPassword, firstName, lastName }: IUser) {
+        return new User(email, hashedPassword, firstName, lastName);
     }
 }
