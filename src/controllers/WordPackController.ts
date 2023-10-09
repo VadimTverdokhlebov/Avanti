@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { ICustomRequest, UserPayload } from '../middlewares/authJwtMiddleware';
-import WordPackService, { IWordPackData } from '../../domain/services/WordPackService';
+import WordPackService, { IWordPackData } from '../domain/services/WordPackService';
 
 export default class WordPackController {
   static async getWordPack(req: Request, res: Response, next: NextFunction) {

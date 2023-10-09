@@ -2,8 +2,8 @@ import express from 'express';
 import path from 'path';
 import config from './config';
 import connectToDataBase from './persistence/connect';
-import indexRouter from './application/routes/indexRouter';
-import errorsMiddleware from './application/middlewares/errorsMiddleware';
+import indexRouter from './routes/indexRouter';
+import errorsMiddleware from './middlewares/errorsMiddleware';
 
 async function startServer() {
   try {

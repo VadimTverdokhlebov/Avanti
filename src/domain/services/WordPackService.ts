@@ -1,7 +1,7 @@
 import WordPackRepository from '../../persistence/repositories/WordPackRepository';
 import WordRepository from '../../persistence/repositories/WordRepository';
 import WordService from './WordService';
-import { UserPayload } from '../../application/middlewares/authJwtMiddleware';
+import { UserPayload } from '../../middlewares/authJwtMiddleware';
 import WordPack, { IWordPack } from '../entities/WordPack';
 import UserRepository from '../../persistence/repositories/UserRepository';
 import UserService from './UserService';

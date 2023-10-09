@@ -1,7 +1,7 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
-import ApiError from '../../exception/ApiError';
-import ApiValidationError from '../../exception/ApiValidationError';
-import logger from '../../helpers/logger';
+import ApiError from '../exception/ApiError';
+import ApiValidationError from '../exception/ApiValidationError';
+import logger from '../helpers/logger';
 
 export default async function errorsMiddleware(
   error: ErrorRequestHandler,

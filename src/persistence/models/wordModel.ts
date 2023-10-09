@@ -12,7 +12,7 @@ const { Schema } = mongoose;
 
 interface IWordDocument extends mongoose.Document, IWordModel { }
 
-const wordSchema = new Schema<IWordModel>({
+const wordSchema = new Schema<IWordDocument>({
     source: {
         type: String,
         require: true,
