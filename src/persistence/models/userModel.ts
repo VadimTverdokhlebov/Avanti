@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 
-const { Schema } = mongoose;
-
 export interface IUserModel {
   _id: mongoose.Types.ObjectId;
   email: string;
@@ -10,13 +8,9 @@ export interface IUserModel {
   lastName?: string;
 }
 
-// const objectId = new mongoose.Types.ObjectId();
+const { Schema } = mongoose;
 
 const userSchema = new Schema<IUserModel>({
-  // _id: {
-  //   type: mongoose.Types.ObjectId,
-  //   default: () => new mongoose.Types.ObjectId(),
-  // },
   email: {
     type: String,
     unique: true,

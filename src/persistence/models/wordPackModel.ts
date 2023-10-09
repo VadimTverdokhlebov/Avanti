@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 
-const { Schema } = mongoose;
-
 interface IWords {
   word: mongoose.Types.ObjectId;
 }
@@ -10,9 +8,10 @@ export interface IWordPackModel {
   name: string;
   description?: string;
   author: mongoose.Types.ObjectId;
-  words: Array<IWords>;
-
+  words: Array<IWords>;  
 }
+
+const { Schema } = mongoose;
 
 const wordPackSchema = new Schema<IWordPackModel>({
   name: {

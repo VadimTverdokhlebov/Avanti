@@ -20,16 +20,16 @@ export default class WordPackService {
   static async createWordPack(wordPackData: IWordPackData, userPayload: UserPayload) {
     const { email } = userPayload;
     const { name, description, wordsId } = wordPackData;
-    
+
     const userDataModel = await UserRepository.getUser(email);
-    
+
     if (!userDataModel) {
       throw ApiError.badRequest('Error creating wordPack, the user not found!');
     }
-    
+
     const { hashedPassword, firstName, lastName } = userDataModel;
     const user = UserService.createUser({ email, hashedPassword, firstName, lastName });
-    
+
     const words = await WordRepository.getWords(wordsId);
     const wordsArray = [];
 
@@ -42,14 +42,24 @@ export default class WordPackService {
     return wordPack;
   }
 
-  static async saveWordPack(wordPack: IWordPack) {
+  static async saveWordPack(wordPack: IWordPack, wordPackData: IWordPackData) {
 
-    const wordPackModel : IWordPackModel = {
+    const author = await UserRepository.getUser(wordPack.user.email);
+    const { wordsId } = wordPackData;
+
+    const words = wordsId.map(id => {
+      return {
+        word: new mongoose.Types.ObjectId(id),
+      };
+    });
+
+    const wordPackModel: IWordPackModel = {
       name: wordPack.name,
-      author: new mongoose.Types.ObjectId(wordPack.user.id),
-      words: []
-    }
+      description: wordPack.description,
+      author: new mongoose.Types.ObjectId(author?.id),
+      words: words,
+    };
 
-    return WordPackRepository.createWordPack(wordPack);
+    return WordPackRepository.createWordPack(wordPackModel);
   }
 }

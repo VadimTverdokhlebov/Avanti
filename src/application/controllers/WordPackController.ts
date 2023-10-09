@@ -16,7 +16,8 @@ export default class WordPackController {
       const { insertWordPackData }:  { insertWordPackData: IWordPackData } = req.body;
       const userPayload: UserPayload = (req as ICustomRequest).user;
       const wordPack = await WordPackService.createWordPack(insertWordPackData, userPayload);
-      return res.json({ status: 'insertWordPack ok', wordPack, userPayload });
+      const wordPackModel = await WordPackService.saveWordPack(wordPack, insertWordPackData);
+      return res.json({ status: 'insertWordPack ok', wordPack, userPayload, wordPackModel });
     } catch (error) {
       return next(error);
     }

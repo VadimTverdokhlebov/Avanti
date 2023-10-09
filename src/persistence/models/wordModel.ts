@@ -1,12 +1,18 @@
 import mongoose from 'mongoose';
-import { IWord } from '../../domain/entities/Word';
 import paginate from 'mongoose-paginate-v2';
+
+export interface IWordModel {
+    source: string;
+    pos?: string;
+    posTranslation?: string;
+    translation: string;
+}
 
 const { Schema } = mongoose;
 
-interface IWordDocument extends mongoose.Document, IWord {}
+interface IWordDocument extends mongoose.Document, IWordModel { }
 
-const wordSchema = new Schema<IWord>({
+const wordSchema = new Schema<IWordModel>({
     source: {
         type: String,
         require: true,
