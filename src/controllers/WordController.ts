@@ -19,7 +19,7 @@ export default class WordController {
       const { insertWords }: { insertWords: IWord[] } = req.body;
       const word = await WordService.insertWords(insertWords);
 
-      return res.json({ status: 'insertWord ok', word });
+      return res.json({ status: 'The word is written down', word });
     } catch (error) {
       return next(error);
     }
@@ -27,7 +27,7 @@ export default class WordController {
 
   static async updateWord(req: Request, res: Response, next: NextFunction) {
     try {
-      return res.json({ status: 'Word is updated' });
+      return res.json({ status: 'The word has been updated' });
     } catch (error) {
       return next(error);
     }
