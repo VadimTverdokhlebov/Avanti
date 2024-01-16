@@ -27,7 +27,7 @@ export default class WordController {
 
   static async updateWord(req: Request, res: Response, next: NextFunction) {
     try {
-      return res.json({ status: 'updateWord ok' });
+      return res.json({ status: 'Word is updated' });
     } catch (error) {
       return next(error);
     }
