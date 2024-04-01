@@ -16,6 +16,19 @@ export interface IWordPackData {
 
 }
 
+export interface IPaginationSettings {
+  searchValue: {
+    author?: string;
+
+    name?: string;
+
+    description?: string;
+
+  },
+  page: number,
+  limit: number
+}
+
 export default class WordPackService {
   static async createWordPack(wordPackData: IWordPackData, userPayload: UserPayload) {
     const { email } = userPayload;
@@ -57,9 +70,15 @@ export default class WordPackService {
       name: wordPack.name,
       description: wordPack.description,
       author: new mongoose.Types.ObjectId(author?.id),
+      authorFullName: `${author?.firstName} ${author?.lastName}`,
       words: words,
     };
 
     return WordPackRepository.createWordPack(wordPackModel);
+  }
+
+  static async paginateWordPacks(paginationSettings: IPaginationSettings) {
+    const { searchValue, page, limit } = paginationSettings;
+    return WordPackRepository.getPaginateWordPacks(searchValue, page, limit);
   }
 }

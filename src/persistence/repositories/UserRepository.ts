@@ -9,4 +9,8 @@ export default class UserRepository {
   static getUser(email: string) {
     return UserModel.findOne({ email });
   }
+
+  static getUsersByObjectID(ObjectsID: string[]) {
+    return UserModel.find({ _id: { $in: ObjectsID } });
+}
 }

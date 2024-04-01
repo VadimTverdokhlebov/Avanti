@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { ICustomRequest, UserPayload } from '../middlewares/authJwtMiddleware';
-import WordPackService, { IWordPackData } from '../domain/services/WordPackService';
+import WordPackService, { IPaginationSettings, IWordPackData } from '../domain/services/WordPackService';
 
 export default class WordPackController {
   static async getWordPack(req: Request, res: Response, next: NextFunction) {
     try {
-      return res.json({ status: 'getWordPack ok' });
+      const { paginationSettings }: { paginationSettings: IPaginationSettings } = req.body;
+      const wordPacks = await WordPackService.paginateWordPacks(paginationSettings); 
+      return res.json({ status: 'getWordPack ok', wordPacks: wordPacks });
     } catch (error) {
       return next(error);
     }

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import paginate from 'mongoose-paginate-v2';
 interface IWords {
   word: mongoose.Types.ObjectId;
 }
@@ -7,11 +7,14 @@ interface IWords {
 export interface IWordPackModel {
   name: string;
   description?: string;
+  authorFullName?: string;
   author: mongoose.Types.ObjectId;
   words: Array<IWords>;  
 }
 
 const { Schema } = mongoose;
+
+interface IWordPackDocument extends mongoose.Document, IWordPackModel { }
 
 const wordPackSchema = new Schema<IWordPackModel>({
   name: {
@@ -19,6 +22,9 @@ const wordPackSchema = new Schema<IWordPackModel>({
     require: true,
   },
   description: {
+    type: String,
+  },
+  authorFullName: {
     type: String,
   },
   author: {
@@ -38,4 +44,6 @@ wordPackSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
 
-export default mongoose.model<IWordPackModel>('WordPack', wordPackSchema);
+wordPackSchema.plugin(paginate);
+
+export default mongoose.model<IWordPackModel, mongoose.PaginateModel<IWordPackDocument>>('WordPack', wordPackSchema);
