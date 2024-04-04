@@ -11,13 +11,18 @@ export interface IPaginationSettings {
         posTranslation?: string;
 
         translation?: string;
-    },
-    page: number,
-    limit: number
+    };
+    page: number;
+    limit: number;
 }
 
 export default class WordService {
-    static createWord(source: string, translation: string, pos: string | undefined, posTranslation: string | undefined) {
+    static createWord(
+        source: string,
+        translation: string,
+        pos: string | undefined,
+        posTranslation: string | undefined
+    ) {
         const word = new Word(source, translation, pos, posTranslation);
         return word;
     }
@@ -30,5 +35,4 @@ export default class WordService {
     static insertWords(insertWords: IWord[]) {
         return WordRepository.insertManyWords(insertWords);
     }
-
 }

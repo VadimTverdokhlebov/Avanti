@@ -39,7 +39,6 @@ export default class WordRepository {
     }
 
     static getPaginateWords(searchValue: ISearchValue, page: number, limit: number) {
-
         interface IQueryPaginate {
             source?: RegExp;
 
@@ -52,9 +51,8 @@ export default class WordRepository {
 
         const options: mongoose.PaginateOptions = {
             page,
-            limit,
+            limit
         };
-
 
         const query: IQueryPaginate = {};
 
@@ -80,5 +78,4 @@ export default class WordRepository {
 
         return WordModel.paginate(query, options);
     }
-
 }

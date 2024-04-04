@@ -6,49 +6,53 @@ import ApiError from '../exception/ApiError';
 import { generateAccessToken } from '../helpers/jwt';
 
 export default class AuthController {
-  static async registration(req: Request, res: Response, next: NextFunction) {
-    try {
-      
-      const { firstName, lastName, email, password } = req.body;
-      const checkEmail = await UserRepository.getUser(email);
-      
-      if (checkEmail) {
-        throw ApiError.badRequest('Email already exist!');
-      }
-      
-      const hashedPassword = await bcrypt.hash(password, 3);
-      const user = UserService.createUser({ email, hashedPassword, firstName, lastName });
+    static async registration(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { firstName, lastName, email, password } = req.body;
+            const checkEmail = await UserRepository.getUser(email);
 
-      const savedUser = await UserRepository.createUser(user);
-      const token = generateAccessToken(savedUser.id, savedUser.email);
+            if (checkEmail) {
+                throw ApiError.badRequest('Email already exist!');
+            }
 
-      return res.json({ status: 'registration ok', savedUser, token });
-    } catch (error) {
-      return next(error);
+            const hashedPassword = await bcrypt.hash(password, 3);
+            const user = UserService.createUser({
+                email,
+                hashedPassword,
+                firstName,
+                lastName
+            });
+
+            const savedUser = await UserRepository.createUser(user);
+            const token = generateAccessToken(savedUser.id, savedUser.email);
+
+            return res.json({ status: 'registration ok', savedUser, token });
+        } catch (error) {
+            return next(error);
+        }
     }
-  }
 
-  static async login(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { email, password } = req.body;
+    static async login(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { email, password } = req.body;
 
-      const user = await UserRepository.getUser(email);
+            const user = await UserRepository.getUser(email);
 
-      if (!user) {
-        throw ApiError.badRequest('The user not found!');
-      }
+            if (!user) {
+                throw ApiError.badRequest('The user not found!');
+            }
 
-      const validPassword = await bcrypt.compare(password, user.hashedPassword);
+            const validPassword = await bcrypt.compare(password, user.hashedPassword);
 
-      if (!validPassword) {
-        throw ApiError.badRequest('Insert incorrect password');
-      }
+            if (!validPassword) {
+                throw ApiError.badRequest('Insert incorrect password');
+            }
 
-      const token = generateAccessToken(user.id, user.email);
+            const token = generateAccessToken(user.id, user.email);
 
-      return res.json({ status: 'login ok', token });
-    } catch (error) {
-      return next(error);
+            return res.json({ status: 'login ok', token });
+        } catch (error) {
+            return next(error);
+        }
     }
-  }
 }

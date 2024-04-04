@@ -10,24 +10,27 @@ export interface IWordModel {
 
 const { Schema } = mongoose;
 
-interface IWordDocument extends mongoose.Document, IWordModel { }
+interface IWordDocument extends mongoose.Document, IWordModel {}
 
-const wordSchema = new Schema<IWordDocument>({
-    source: {
-        type: String,
-        require: true,
+const wordSchema = new Schema<IWordDocument>(
+    {
+        source: {
+            type: String,
+            require: true
+        },
+        pos: {
+            type: String
+        },
+        posTranslation: {
+            type: String
+        },
+        translation: {
+            type: String,
+            require: true
+        }
     },
-    pos: {
-        type: String,
-    },
-    posTranslation: {
-        type: String,
-    },
-    translation: {
-        type: String,
-        require: true,
-    },
-}, { timestamps: true });
+    { timestamps: true }
+);
 
 wordSchema.virtual('id').get(function () {
     return this._id.toHexString();

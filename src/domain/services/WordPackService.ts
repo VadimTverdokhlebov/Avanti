@@ -10,75 +10,77 @@ import { IWordPackModel } from '../../persistence/models/wordPackModel';
 import mongoose from 'mongoose';
 
 export interface IWordPackData {
-  name: string,
-  description: string,
-  wordsId: string[]
-
+    name: string;
+    description: string;
+    wordsId: string[];
 }
 
 export interface IPaginationSettings {
-  searchValue: {
-    author?: string;
+    searchValue: {
+        author?: string;
 
-    name?: string;
+        name?: string;
 
-    description?: string;
-
-  },
-  page: number,
-  limit: number
+        description?: string;
+    };
+    page: number;
+    limit: number;
 }
 
 export default class WordPackService {
-  static async createWordPack(wordPackData: IWordPackData, userPayload: UserPayload) {
-    const { email } = userPayload;
-    const { name, description, wordsId } = wordPackData;
+    static async createWordPack(wordPackData: IWordPackData, userPayload: UserPayload) {
+        const { email } = userPayload;
+        const { name, description, wordsId } = wordPackData;
 
-    const userDataModel = await UserRepository.getUser(email);
+        const userDataModel = await UserRepository.getUser(email);
 
-    if (!userDataModel) {
-      throw ApiError.badRequest('Error creating wordPack, the user not found!');
+        if (!userDataModel) {
+            throw ApiError.badRequest('Error creating wordPack, the user not found!');
+        }
+
+        const { hashedPassword, firstName, lastName } = userDataModel;
+        const user = UserService.createUser({
+            email,
+            hashedPassword,
+            firstName,
+            lastName
+        });
+
+        const words = await WordRepository.getWords(wordsId);
+        const wordsArray = [];
+
+        for (const word of words) {
+            const { source, pos, posTranslation, translation } = word;
+            wordsArray.push(WordService.createWord(source, translation, pos, posTranslation));
+        }
+
+        const wordPack = new WordPack(name, user, description, wordsArray);
+        return wordPack;
     }
 
-    const { hashedPassword, firstName, lastName } = userDataModel;
-    const user = UserService.createUser({ email, hashedPassword, firstName, lastName });
+    static async saveWordPack(wordPack: IWordPack, wordPackData: IWordPackData) {
+        const author = await UserRepository.getUser(wordPack.user.email);
+        const { wordsId } = wordPackData;
 
-    const words = await WordRepository.getWords(wordsId);
-    const wordsArray = [];
+        const words = wordsId.map(id => {
+            return {
+                word: new mongoose.Types.ObjectId(id)
+            };
+        });
 
-    for (const word of words) {
-      const { source, pos, posTranslation, translation } = word;
-      wordsArray.push(WordService.createWord(source, translation, pos, posTranslation));
+        const wordPackModel: IWordPackModel = {
+            name: wordPack.name,
+            description: wordPack.description,
+            author: new mongoose.Types.ObjectId(author?.id),
+            authorFullName: `${author?.firstName} ${author?.lastName}`,
+            words: words
+        };
+
+        return WordPackRepository.createWordPack(wordPackModel);
     }
 
-    const wordPack = new WordPack(name, user, description, wordsArray);
-    return wordPack;
-  }
-
-  static async saveWordPack(wordPack: IWordPack, wordPackData: IWordPackData) {
-
-    const author = await UserRepository.getUser(wordPack.user.email);
-    const { wordsId } = wordPackData;
-
-    const words = wordsId.map(id => {
-      return {
-        word: new mongoose.Types.ObjectId(id),
-      };
-    });
-
-    const wordPackModel: IWordPackModel = {
-      name: wordPack.name,
-      description: wordPack.description,
-      author: new mongoose.Types.ObjectId(author?.id),
-      authorFullName: `${author?.firstName} ${author?.lastName}`,
-      words: words,
-    };
-
-    return WordPackRepository.createWordPack(wordPackModel);
-  }
-
-  static async paginateWordPacks(paginationSettings: IPaginationSettings) {
-    const { searchValue, page, limit } = paginationSettings;
-    return WordPackRepository.getPaginateWordPacks(searchValue, page, limit);
-  }
+    static async paginateWordPacks(paginationSettings: IPaginationSettings) {
+        const { searchValue, page, limit } = paginationSettings;
+        return WordPackRepository.getPaginateWordPacks(searchValue, page, limit);
+    }
 }

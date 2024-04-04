@@ -7,16 +7,13 @@ export interface ISearchValue {
     name?: string;
 
     description?: string;
-
 }
 export default class WordPackRepository {
     static createWordPack(wordPack: IWordPackModel) {
         return WordPackModel.create(wordPack);
     }
 
-    static getWordPack(wordPackId: string) {
-
-    }
+    static getWordPack(wordPackId: string) {}
 
     static getPaginateWordPacks(searchValue: ISearchValue, page: number, limit: number) {
         interface IQueryPaginate {
@@ -40,7 +37,7 @@ export default class WordPackRepository {
             ],
             select: 'name authorFullName description',
             page,
-            limit,
+            limit
         };
 
         const query: IQueryPaginate = {};

@@ -8,6 +8,6 @@ const indexRouter = express.Router();
 
 indexRouter.use('/api', authRouter);
 indexRouter.use('/api', authJwtMiddleware, wordRouter);
-indexRouter.use('/api', authJwtMiddleware,  wordPackRouter);
+indexRouter.use('/api', authJwtMiddleware, wordPackRouter);
 
 export default indexRouter;
