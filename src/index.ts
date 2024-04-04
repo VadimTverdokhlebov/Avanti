@@ -5,7 +5,7 @@ import connectToDataBase from './persistence/connect';
 import indexRouter from './routes/indexRouter';
 import errorsMiddleware from './middlewares/errorsMiddleware';
 
-async function startServer() {
+function startServer() {
     try {
         const app = express();
         const PORT = config.serverPort;
@@ -17,9 +17,7 @@ async function startServer() {
         app.use('/', indexRouter);
         app.use(errorsMiddleware);
 
-        app.listen(PORT, () => {
-            console.log(`Server listens http://${HOST}:${PORT}`);
-        });
+        app.listen(PORT, () => console.log(`Server listens http://${HOST}:${PORT}`));
     } catch (error) {
         console.error('Start server error:', error);
     }

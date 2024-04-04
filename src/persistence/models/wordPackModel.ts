@@ -44,10 +44,6 @@ const wordPackSchema = new Schema<IWordPackModel>(
     { timestamps: true }
 );
 
-wordPackSchema.virtual('id').get(function () {
-    return this._id.toHexString();
-});
-
 wordPackSchema.plugin(paginate);
 
 export default mongoose.model<IWordPackModel, mongoose.PaginateModel<IWordPackDocument>>('WordPack', wordPackSchema);

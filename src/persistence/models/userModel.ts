@@ -32,8 +32,4 @@ const userSchema = new Schema<IUserModel>(
     { timestamps: true }
 );
 
-userSchema.virtual('id').get(function () {
-    return this._id.toHexString();
-});
-
 export default mongoose.model<IUserModel>('User', userSchema);

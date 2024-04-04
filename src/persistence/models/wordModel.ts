@@ -32,10 +32,6 @@ const wordSchema = new Schema<IWordDocument>(
     { timestamps: true }
 );
 
-wordSchema.virtual('id').get(function () {
-    return this._id.toHexString();
-});
-
 wordSchema.plugin(paginate);
 
 export default mongoose.model<IWordDocument, mongoose.PaginateModel<IWordDocument>>('Word', wordSchema);
