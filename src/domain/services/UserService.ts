@@ -1,7 +1,12 @@
-import User, { IUser } from '../entities/User';
+export interface IUserData {
+    email: string;
+    hashedPassword: string;
+    firstName: string;
+    lastName: string;
+}
 
 export default class UserService {
-    static createUser({ email, hashedPassword, firstName, lastName }: IUser) {
+    static saveUser(userData: IUserData) {
         return new User(email, hashedPassword, firstName, lastName);
     }
 }

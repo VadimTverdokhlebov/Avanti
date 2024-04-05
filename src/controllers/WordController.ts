@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import WordService, { IPaginationSettings } from '../domain/services/WordService';
-import { IWord } from '../domain/entities/Word';
+import WordService, { IPaginationSettings, IWordData } from '../domain/services/WordService';
 
 export default class WordController {
     static async getWord(req: Request, res: Response, next: NextFunction) {
         try {
-            const { paginationSettings }: { paginationSettings: IPaginationSettings } = req.body;
+            const paginationSettings: IPaginationSettings = req.body;
             const words = await WordService.paginateWord(paginationSettings);
 
             return res.json({ status: 'getWord ok', word: words });
@@ -16,7 +15,7 @@ export default class WordController {
 
     static async insertWord(req: Request, res: Response, next: NextFunction) {
         try {
-            const { insertWords }: { insertWords: IWord[] } = req.body;
+            const insertWords: IWordData[] = req.body;
             const word = await WordService.insertWords(insertWords);
 
             return res.json({ status: 'The word is written down', word });

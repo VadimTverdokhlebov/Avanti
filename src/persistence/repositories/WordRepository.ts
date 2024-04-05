@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import WordModel from '../models/wordModel';
-import { IWord } from '../../domain/entities/Word';
-
+import { IWordData } from '../../domain/services/WordService';
 export interface ISearchValue {
     source?: string;
 
@@ -13,12 +12,12 @@ export interface ISearchValue {
 }
 
 export default class WordRepository {
-    static createWord(word: IWord) {
-        return WordModel.create(word);
+    static createWord(wordData: IWordData) {
+        return WordModel.create(wordData);
     }
 
-    static insertManyWords(words: IWord[]) {
-        return WordModel.insertMany(words);
+    static insertManyWords(wordsData: IWordData[]) {
+        return WordModel.insertMany(wordsData);
     }
 
     static deleteAllWords() {

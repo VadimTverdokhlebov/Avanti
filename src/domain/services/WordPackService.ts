@@ -1,10 +1,7 @@
 import WordPackRepository from '../../persistence/repositories/WordPackRepository';
 import WordRepository from '../../persistence/repositories/WordRepository';
-import WordService from './WordService';
 import { UserPayload } from '../../middlewares/authJwtMiddleware';
-import WordPack, { IWordPack } from '../entities/WordPack';
 import UserRepository from '../../persistence/repositories/UserRepository';
-import UserService from './UserService';
 import ApiError from '../../exception/ApiError';
 import { IWordPackModel } from '../../persistence/models/wordPackModel';
 import mongoose from 'mongoose';
@@ -28,51 +25,32 @@ export interface IPaginationSettings {
 }
 
 export default class WordPackService {
-    static async createWordPack(wordPackData: IWordPackData, userPayload: UserPayload) {
+    static async saveWordPack(wordPackData: IWordPackData, userPayload: UserPayload) {
         const { email } = userPayload;
         const { name, description, wordsId } = wordPackData;
-
         const userDataModel = await UserRepository.getUser(email);
 
         if (!userDataModel) {
             throw ApiError.badRequest('Error creating wordPack, the user not found!');
         }
 
-        const { hashedPassword, firstName, lastName } = userDataModel;
-        const user = UserService.createUser({
-            email,
-            hashedPassword,
-            firstName,
-            lastName
-        });
+        const wordsDataModel = await WordRepository.getWords(wordsId);
 
-        const words = await WordRepository.getWords(wordsId);
-        const wordsArray = [];
-
-        for (const word of words) {
-            const { source, pos, posTranslation, translation } = word;
-            wordsArray.push(WordService.createWord(source, translation, pos, posTranslation));
+        if (!wordsDataModel.length) {
+            throw ApiError.badRequest('Error creating wordPack, the words not found!');
         }
 
-        const wordPack = new WordPack(name, user, description, wordsArray);
-        return wordPack;
-    }
-
-    static async saveWordPack(wordPack: IWordPack, wordPackData: IWordPackData) {
-        const author = await UserRepository.getUser(wordPack.user.email);
-        const { wordsId } = wordPackData;
-
-        const words = wordsId.map(id => {
+        const words = wordsDataModel.map(word => {
             return {
-                word: new mongoose.Types.ObjectId(id)
+                word: new mongoose.Types.ObjectId(word._id)
             };
         });
 
         const wordPackModel: IWordPackModel = {
-            name: wordPack.name,
-            description: wordPack.description,
-            author: new mongoose.Types.ObjectId(author?.id),
-            authorFullName: `${author?.firstName} ${author?.lastName}`,
+            name: name,
+            description: description,
+            author: new mongoose.Types.ObjectId(userDataModel?.id),
+            authorFullName: `${userDataModel?.firstName} ${userDataModel?.lastName}`,
             words: words
         };
 

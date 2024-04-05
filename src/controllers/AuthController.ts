@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { NextFunction, Request, Response } from 'express';
 import UserRepository from '../persistence/repositories/UserRepository';
-import UserService from '../domain/services/UserService';
+import UserService, { IUserData } from '../domain/services/UserService';
 import ApiError from '../exception/ApiError';
 import { generateAccessToken } from '../helpers/jwt';
 
@@ -16,14 +16,14 @@ export default class AuthController {
             }
 
             const hashedPassword = await bcrypt.hash(password, 3);
-            const user = UserService.createUser({
+            const user: IUserData = {
                 email,
                 hashedPassword,
                 firstName,
                 lastName
-            });
+            };
 
-            const savedUser = await UserRepository.createUser(user);
+            const savedUser = await UserRepository.saveUser(user);
             const token = generateAccessToken(savedUser.id, savedUser.email);
 
             return res.json({ status: 'registration ok', savedUser, token });

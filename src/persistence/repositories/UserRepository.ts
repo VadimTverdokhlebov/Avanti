@@ -1,9 +1,8 @@
 import UserModel from '../models/userModel';
-import { IUser } from '../../domain/entities/User';
-
+import { IUserData } from '../../domain/services/UserService';
 export default class UserRepository {
-    static createUser(user: IUser) {
-        return UserModel.create(user);
+    static saveUser(userData: IUserData) {
+        return UserModel.create(userData);
     }
 
     static getUser(email: string) {

@@ -5,7 +5,7 @@ import WordPackService, { IPaginationSettings, IWordPackData } from '../domain/s
 export default class WordPackController {
     static async getWordPack(req: Request, res: Response, next: NextFunction) {
         try {
-            const { paginationSettings }: { paginationSettings: IPaginationSettings } = req.body;
+            const paginationSettings: IPaginationSettings = req.body;
             const wordPacks = await WordPackService.paginateWordPacks(paginationSettings);
             return res.json({ status: 'getWordPack ok', wordPacks: wordPacks });
         } catch (error) {
@@ -15,13 +15,11 @@ export default class WordPackController {
 
     static async insertWordPack(req: Request, res: Response, next: NextFunction) {
         try {
-            const { insertWordPackData }: { insertWordPackData: IWordPackData } = req.body;
+            const wordPackData: IWordPackData = req.body;
             const userPayload: UserPayload = (req as ICustomRequest).user;
-            const wordPack = await WordPackService.createWordPack(insertWordPackData, userPayload);
-            const wordPackModel = await WordPackService.saveWordPack(wordPack, insertWordPackData);
+            const wordPackModel = await WordPackService.saveWordPack(wordPackData, userPayload);
             return res.json({
                 status: 'insertWordPack ok',
-                wordPack,
                 userPayload,
                 wordPackModel
             });
