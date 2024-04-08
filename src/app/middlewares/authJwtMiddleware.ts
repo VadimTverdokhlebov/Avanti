@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import config from '../config';
-import ApiError from '../exception/ApiError';
+import config from '../../config';
+import ApiError from '../../exception/ApiError';
 
 export type UserPayload = {
     userId: string;

@@ -7,7 +7,26 @@
     "esModuleInterop": true,                            
     "forceConsistentCasingInFileNames": true,           
     "strict": true,
-    "skipLibCheck": true,  
+    "skipLibCheck": true, 
+    "baseUrl": ".",
+    "paths": {
+      "config*": ["./src/config"],
+      "databaseConnect*":["./src/app/persistence/databaseConnect"],
+      "indexRouter*":["./src/app/routes/indexRouter"],
+      "errorsMiddleware*":["./src/app/middlewares/errorsMiddleware"],
+      // models
+      "userModel*":["./src/app/persistence/models/userModel"],
+      "wordModel*":["./src/app/persistence/models/wordModel"],
+      "wordPackModel*":["./src/app/persistence/models/wordPackModel"],
+      // repositories
+      "UserRepository*":["./src/app/persistence/repositories/UserRepository"],
+      "WordRepository*":["./src/app/persistence/repositories/WordRepository"],
+      "WordPackRepository*":["./src/app/persistence/repositories/WordPackRepository"],
+      // services
+      "UserService*":["./src/app/services/UserService"],
+      "WordService*":["./src/app/services/WordService"],
+      "WordPackService*":["./src/app/services/WordPackService"],
+    } 
   },
   "include": [
     "src/**/*.ts",

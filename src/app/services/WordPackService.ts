@@ -1,9 +1,9 @@
-import WordPackRepository from '../../persistence/repositories/WordPackRepository';
-import WordRepository from '../../persistence/repositories/WordRepository';
-import { UserPayload } from '../../middlewares/authJwtMiddleware';
-import UserRepository from '../../persistence/repositories/UserRepository';
+import WordPackRepository from 'WordPackRepository';
+import WordRepository from 'WordRepository';
+import { UserPayload } from '../middlewares/authJwtMiddleware';
+import UserRepository from 'UserRepository';
 import ApiError from '../../exception/ApiError';
-import { IWordPackModel } from '../../persistence/models/wordPackModel';
+import { IWordPackModel } from 'wordPackModel';
 import mongoose from 'mongoose';
 
 export interface IWordPackData {

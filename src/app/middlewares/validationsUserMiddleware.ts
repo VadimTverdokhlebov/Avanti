@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import ApiValidationError from '../exception/ApiValidationError';
+import ApiValidationError from '../../exception/ApiValidationError';
 
 export default async function valaditionsMiddleware(req: Request, res: Response, next: NextFunction) {
     try {

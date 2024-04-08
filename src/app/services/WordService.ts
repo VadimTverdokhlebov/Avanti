@@ -1,4 +1,4 @@
-import WordRepository from '../../persistence/repositories/WordRepository';
+import WordRepository from 'WordRepository';
 
 export interface IPaginationSettings {
     searchValue: {

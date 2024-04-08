@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import WordModel from '../models/wordModel';
-import { IWordData } from '../../domain/services/WordService';
+import WordModel from 'wordModel';
+import { IWordData } from '../../services/WordService';
 export interface ISearchValue {
     source?: string;
 

@@ -1,5 +1,5 @@
-import UserModel from '../models/userModel';
-import { IUserData } from '../../domain/services/UserService';
+import UserModel from 'userModel';
+import { IUserData } from 'UserService';
 export default class UserRepository {
     static saveUser(userData: IUserData) {
         return UserModel.create(userData);

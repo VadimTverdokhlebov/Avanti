@@ -7,6 +7,6 @@ export interface IUserData {
 
 export default class UserService {
     static saveUser(userData: IUserData) {
-        return new User(email, hashedPassword, firstName, lastName);
+        return userData;
     }
 }
