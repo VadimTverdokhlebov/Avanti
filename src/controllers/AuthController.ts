@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { NextFunction, Request, Response } from 'express';
 import UserRepository from '../persistence/repositories/UserRepository';
-import UserService, { IUserData } from '../domain/services/UserService';
+import UserService, { IUserData } from '../services/UserService';
 import ApiError from '../exception/ApiError';
 import { generateAccessToken } from '../helpers/jwt';
 
