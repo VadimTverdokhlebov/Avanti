@@ -1,9 +1,9 @@
 import express from 'express';
 import path from 'path';
-import config from 'config';
-import databaseConnect from 'databaseConnect';
-import indexRouter from 'indexRouter';
-import errorsMiddleware from 'errorsMiddleware';
+import config from './config';
+import connectToDataBase from './persistence/connect';
+import indexRouter from './routes/indexRouter';
+import errorsMiddleware from './middlewares/errorsMiddleware';
 
 function startServer() {
     try {
@@ -23,4 +23,4 @@ function startServer() {
     }
 }
 
-databaseConnect().then(() => startServer());
+connectToDataBase().then(() => startServer());

@@ -17,8 +17,8 @@ module.exports = {
             }
         ],
         '@typescript-eslint/no-implicit-any-catch': 'off',
-        'no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
+        'no-unused-vars': 'warn',
+        '@typescript-eslint/no-unused-vars': 'warn',
         '@typescript-eslint/indent': 'off',
         'no-restricted-syntax': ['error', 'BinaryExpression[operator="of"]'],
         'no-underscore-dangle': 'off',

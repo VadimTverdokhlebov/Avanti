@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import WordService, { IPaginationSettings, IWordData } from 'WordService';
+import WordService, { IPaginationSettings, IWordData } from '../domain/services/WordService';
 
 export default class WordController {
     static async getWord(req: Request, res: Response, next: NextFunction) {

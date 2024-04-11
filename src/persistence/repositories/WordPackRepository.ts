@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import WordPackModel, { IWordPackModel } from 'wordPackModel';
+import WordPackModel, { IWordPackModel } from '../models/wordPackModel';
 
 export interface ISearchValue {
     authorFullName?: string;
