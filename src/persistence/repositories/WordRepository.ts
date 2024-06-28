@@ -50,7 +50,7 @@ export default class WordRepository {
 
     const options: mongoose.PaginateOptions = {
       page,
-      limit
+      limit,
     };
 
     const query: IQueryPaginate = {};

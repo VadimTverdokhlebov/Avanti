@@ -21,7 +21,7 @@ export default class WordPackController {
       return res.json({
         status: 'insertWordPack ok',
         userPayload,
-        wordPackModel
+        wordPackModel,
       });
     } catch (error) {
       return next(error);

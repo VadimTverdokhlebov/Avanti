@@ -15,21 +15,21 @@ const userSchema = new Schema<IUserModel>(
     email: {
       type: String,
       unique: true,
-      require: true
+      require: true,
     },
     hashedPassword: {
       type: String,
       unique: true,
-      require: true
+      require: true,
     },
     firstName: {
-      type: String
+      type: String,
     },
     lastName: {
-      type: String
-    }
+      type: String,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model<IUserModel>('User', userSchema);

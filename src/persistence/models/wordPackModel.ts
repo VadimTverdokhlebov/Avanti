@@ -20,28 +20,28 @@ const wordPackSchema = new Schema<IWordPackModel>(
   {
     name: {
       type: String,
-      require: true
+      require: true,
     },
     description: {
-      type: String
+      type: String,
     },
     authorFullName: {
-      type: String
+      type: String,
     },
     author: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
     },
     words: [
       new Schema({
         word: {
           type: Schema.Types.ObjectId,
-          ref: 'Word'
-        }
-      })
-    ]
+          ref: 'Word',
+        },
+      }),
+    ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 wordPackSchema.plugin(paginate);

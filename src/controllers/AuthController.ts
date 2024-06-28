@@ -20,7 +20,7 @@ export default class AuthController {
         email,
         hashedPassword,
         firstName,
-        lastName
+        lastName,
       };
 
       const savedUser = await UserRepository.saveUser(user);

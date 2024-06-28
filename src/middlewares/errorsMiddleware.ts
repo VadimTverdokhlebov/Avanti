@@ -8,7 +8,7 @@ export default async function errorsMiddleware(
   req: Request,
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  next: NextFunction
+  next: NextFunction,
 ) {
   if (error instanceof ApiError) {
     logger.error({ message: error.message, errors: error.errors });

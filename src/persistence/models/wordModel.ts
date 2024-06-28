@@ -16,20 +16,20 @@ const wordSchema = new Schema<IWordDocument>(
   {
     source: {
       type: String,
-      require: true
+      require: true,
     },
     pos: {
-      type: String
+      type: String,
     },
     posTranslation: {
-      type: String
+      type: String,
     },
     translation: {
       type: String,
-      require: true
-    }
+      require: true,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 wordSchema.plugin(paginate);

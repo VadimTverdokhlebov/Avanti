@@ -9,33 +9,33 @@ export default async function valaditionsMiddleware(req: Request, res: Response,
       {
         regex: /^[A-Za-z0-9!#*&$]+$/,
         rules: 'Only English letters, numbers and symbols !, #, *, &, $ are allowed',
-        field: 'password'
+        field: 'password',
       },
       {
         regex: /\d/,
         rules: 'Must be one digit',
-        field: 'password'
+        field: 'password',
       },
       {
         regex: /[A-Z]/,
         rules: 'Must be one capital letter',
-        field: 'password'
+        field: 'password',
       },
       {
         regex: /[!#*&$]/,
         rules: 'There must be one special character: !, #, *, &, $',
-        field: 'password'
+        field: 'password',
       },
       {
         regex: /^.{8,}$/,
         rules: 'Password must be at least 8 characters',
-        field: 'password'
+        field: 'password',
       },
       {
         regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         rules: 'Email is not valid',
-        field: 'email'
-      }
+        field: 'email',
+      },
     ];
 
     if (!req.body) {

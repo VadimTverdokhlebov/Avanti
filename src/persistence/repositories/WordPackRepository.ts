@@ -28,16 +28,16 @@ export default class WordPackRepository {
       populate: [
         {
           path: 'author',
-          select: 'email firstName lastName'
+          select: 'email firstName lastName',
         },
         {
           path: 'words.word',
-          select: 'source pos posTranslation translation'
-        }
+          select: 'source pos posTranslation translation',
+        },
       ],
       select: 'name authorFullName description',
       page,
-      limit
+      limit,
     };
 
     const query: IQueryPaginate = {};

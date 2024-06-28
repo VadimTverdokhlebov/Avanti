@@ -10,7 +10,7 @@ export function generateAccessToken(id: number, email: string) {
 
   const payload = {
     id,
-    email
+    email,
   };
 
   return jwt.sign(payload, secretKey, { expiresIn: '24h' });

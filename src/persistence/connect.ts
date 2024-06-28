@@ -7,7 +7,7 @@ export default async function connectToDataBase() {
   const optionsDataBase = {
     authSource: 'admin',
     user: config.databaseUser,
-    pass: config.databasePassword
+    pass: config.databasePassword,
   };
 
   mongoose.set('strictQuery', true);

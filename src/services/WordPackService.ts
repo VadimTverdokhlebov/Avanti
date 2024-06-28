@@ -42,7 +42,7 @@ export default class WordPackService {
 
     const words = wordsDataModel.map(word => {
       return {
-        word: new mongoose.Types.ObjectId(word._id)
+        word: new mongoose.Types.ObjectId(word._id),
       };
     });
 
@@ -51,7 +51,7 @@ export default class WordPackService {
       description: description,
       author: new mongoose.Types.ObjectId(userDataModel?.id),
       authorFullName: `${userDataModel?.firstName} ${userDataModel?.lastName}`,
-      words: words
+      words: words,
     };
 
     return WordPackRepository.createWordPack(wordPackModel);
