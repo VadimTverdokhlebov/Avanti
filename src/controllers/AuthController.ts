@@ -1,10 +1,9 @@
 import bcrypt from 'bcrypt';
 import { NextFunction, Request, Response } from 'express';
 import UserRepository from '../persistence/repositories/UserRepository';
-import UserService, { IUserData } from '../services/UserService';
 import ApiError from '../exception/ApiError';
 import { generateAccessToken } from '../helpers/jwt';
-
+import { IUser } from '../persistence/models/userModel';
 export default class AuthController {
   static async registration(req: Request, res: Response, next: NextFunction) {
     try {
@@ -16,7 +15,7 @@ export default class AuthController {
       }
 
       const hashedPassword = await bcrypt.hash(password, 3);
-      const user: IUserData = {
+      const user: IUser = {
         email,
         hashedPassword,
         firstName,
@@ -26,7 +25,7 @@ export default class AuthController {
       const savedUser = await UserRepository.saveUser(user);
       const token = generateAccessToken(savedUser.id, savedUser.email);
 
-      return res.json({ status: 'registration ok', savedUser, token });
+      return res.json({ message: 'registration successfully', savedUser, token });
     } catch (error) {
       return next(error);
     }
@@ -35,7 +34,6 @@ export default class AuthController {
   static async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
-
       const user = await UserRepository.getUser(email);
 
       if (!user) {
@@ -50,7 +48,7 @@ export default class AuthController {
 
       const token = generateAccessToken(user.id, user.email);
 
-      return res.json({ status: 'login ok', token });
+      return res.json({ message: 'login successfully', token });
     } catch (error) {
       return next(error);
     }

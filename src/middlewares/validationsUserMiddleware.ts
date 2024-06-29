@@ -12,21 +12,6 @@ export default async function valaditionsMiddleware(req: Request, res: Response,
         field: 'password',
       },
       {
-        regex: /\d/,
-        rules: 'Must be one digit',
-        field: 'password',
-      },
-      {
-        regex: /[A-Z]/,
-        rules: 'Must be one capital letter',
-        field: 'password',
-      },
-      {
-        regex: /[!#*&$]/,
-        rules: 'There must be one special character: !, #, *, &, $',
-        field: 'password',
-      },
-      {
         regex: /^.{8,}$/,
         rules: 'Password must be at least 8 characters',
         field: 'password',

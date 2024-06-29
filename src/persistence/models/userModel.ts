@@ -1,11 +1,13 @@
 import mongoose from 'mongoose';
 
-export interface IUserModel {
-  _id: mongoose.Types.ObjectId;
+export interface IUser {
   email: string;
   hashedPassword: string;
   firstName?: string;
   lastName?: string;
+}
+export interface IUserModel extends IUser {
+  _id: mongoose.Types.ObjectId;
 }
 
 const { Schema } = mongoose;

@@ -13,7 +13,7 @@ export function generateAccessToken(id: number, email: string) {
     email,
   };
 
-  return jwt.sign(payload, secretKey, { expiresIn: '24h' });
+  return jwt.sign(payload, secretKey, { expiresIn: '240h' });
 }
 
 export function getUser(token: string) {

@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-export interface IWordModel {
+export interface IWord {
   source: string;
   pos?: string;
   posTranslation?: string;
   translation: string;
 }
+export interface IWordModel extends IWord {}
 
 const { Schema } = mongoose;
 

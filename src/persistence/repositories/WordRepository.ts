@@ -1,14 +1,22 @@
 import mongoose from 'mongoose';
 import WordModel from '../models/wordModel';
-import { IWordData } from '../../services/WordService';
+export interface IWordData {
+  source: string;
+  pos?: string;
+  posTranslation?: string;
+  translation: string;
+}
 export interface ISearchValue {
   source?: string;
-
   pos?: string;
-
   posTranslation?: string;
-
   translation?: string;
+}
+
+export interface IWordPaginationSettings {
+  searchValue: ISearchValue;
+  page: number;
+  limit: number;
 }
 
 export default class WordRepository {
@@ -37,17 +45,14 @@ export default class WordRepository {
     return WordModel.find({ source: regexp });
   }
 
-  static getPaginateWords(searchValue: ISearchValue, page: number, limit: number) {
+  static getPaginateWords(paginationSettings: IWordPaginationSettings) {
     interface IQueryPaginate {
       source?: RegExp;
-
       pos?: RegExp;
-
       posTranslation?: RegExp;
-
       translation?: RegExp;
     }
-
+    const { searchValue, page, limit } = paginationSettings;
     const options: mongoose.PaginateOptions = {
       page,
       limit,

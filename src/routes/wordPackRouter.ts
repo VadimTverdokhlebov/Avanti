@@ -1,10 +1,10 @@
 import express from 'express';
-import WordPackContriller from '../controllers/WordPackController';
+import WordPackController from '../controllers/WordPackController';
 
 const wordRouter = express.Router();
 
-wordRouter.get('/wordpack', WordPackContriller.getWordPack);
-wordRouter.post('/wordpack', WordPackContriller.insertWordPack);
-wordRouter.put('/wordpack', WordPackContriller.updateWordPack);
+wordRouter.get('/wordpack', WordPackController.getWordPack);
+wordRouter.post('/wordpack', WordPackController.createWordPack);
+wordRouter.put('/wordpack', WordPackController.updateWordPack);
 
 export default wordRouter;

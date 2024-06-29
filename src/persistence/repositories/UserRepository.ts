@@ -1,7 +1,6 @@
-import UserModel from '../models/userModel';
-import { IUserData } from '../../services/UserService';
+import UserModel, { IUser } from '../models/userModel';
 export default class UserRepository {
-  static saveUser(userData: IUserData) {
+  static saveUser(userData: IUser) {
     return UserModel.create(userData);
   }
 
@@ -9,7 +8,7 @@ export default class UserRepository {
     return UserModel.findOne({ email });
   }
 
-  static getUsersByObjectID(ObjectsID: string[]) {
-    return UserModel.find({ _id: { $in: ObjectsID } });
+  static getUsersByObjectID(ObjectsId: string[]) {
+    return UserModel.find({ _id: { $in: ObjectsId } });
   }
 }

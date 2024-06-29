@@ -3,9 +3,7 @@ import WordPackModel, { IWordPackModel } from '../models/wordPackModel';
 
 export interface ISearchValue {
   authorFullName?: string;
-
   name?: string;
-
   description?: string;
 }
 export default class WordPackRepository {
@@ -13,14 +11,14 @@ export default class WordPackRepository {
     return WordPackModel.create(wordPack);
   }
 
-  static getWordPack(wordPackId: string) {}
+  static getWordPack(ObjectsId: string) {
+    return WordPackModel.findOne({ _id: { $in: ObjectsId } });
+  }
 
   static getPaginateWordPacks(searchValue: ISearchValue, page: number, limit: number) {
     interface IQueryPaginate {
       authorFullName?: RegExp;
-
       name?: RegExp;
-
       description?: RegExp;
     }
 
