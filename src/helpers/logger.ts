@@ -14,7 +14,6 @@ const logConfiguration = {
     }),
     winston.format.printf(info => {
       const logMessage = `${info.level}: message: ${info.message}: ${[info.timestamp]}`;
-      // Add stack trace if available
       if (info.stack) {
         return `${logMessage}\nStack trace: ${info.stack}`;
       }

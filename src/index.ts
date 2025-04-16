@@ -6,13 +6,11 @@ import indexRouter from './routes/indexRouter';
 import errorsMiddleware from './middlewares/errorsMiddleware';
 import logger from './helpers/logger';
 
-// Global error handlers
 process.on('uncaughtException', (error) => {
   logger.error({ 
     message: `Uncaught Exception: ${error.message}`, 
     stack: error.stack 
   });
-  // Give logger some time to write to file before exiting
   setTimeout(() => {
     process.exit(1);
   }, 1000);
@@ -37,7 +35,6 @@ function startServer() {
     app.use(express.static(publicPath));
     app.use('/', indexRouter);
     
-    // Используем error-handling middleware в соответствии с требованиями Express 5
     app.use((
       err: any,
       req: Request,
@@ -57,7 +54,6 @@ function startServer() {
   }
 }
 
-// Попытка подключения к базе данных с повторными попытками
 async function init() {
   let connected = false;
   let attempts = 0;
@@ -70,7 +66,6 @@ async function init() {
     
     if (!connected && attempts < maxAttempts) {
       console.log(`Connection failed. Retrying in 3 seconds...`);
-      // Ждем 3 секунды перед повторной попыткой
       await new Promise(resolve => setTimeout(resolve, 3000));
     }
   }

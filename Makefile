@@ -1,54 +1,59 @@
-# Avanti Project Makefile
 
-.PHONY: help up down purge restart logs shell install dev clean
+.PHONY: help up down restart logs shell install dev clean init env
 
-# Include environment variables from .env file
-include .env
-export
-
-# Colors for terminal output
 GREEN = \033[0;32m
 YELLOW = \033[0;33m
 RED = \033[0;31m
-NC = \033[0m # No Color
+NC = \033[0m
 
-# Default target
+ifneq (,$(wildcard ./.env))
+include .env
+export
+endif
+
 help:
 	@echo "${YELLOW}Avanti Project${NC} - available commands:"
-	@echo "${GREEN}make up${NC}        - Start MongoDB container"
-	@echo "${GREEN}make down${NC}      - Stop MongoDB container"
-	@echo "${GREEN}make purge${NC}     - Stop and remove MongoDB container and volume"
-	@echo "${GREEN}make restart${NC}   - Restart MongoDB container"
-	@echo "${GREEN}make logs${NC}      - Show MongoDB container logs"
+	@echo "${GREEN}make init${NC}      - Initialize project (create .env and install dependencies)"
+	@echo "${GREEN}make env${NC}       - Create .env file from .env.example"
+	@echo "${GREEN}make up${NC}        - Start container services"
+	@echo "${GREEN}make down${NC}      - Stop container services"
+	@echo "${GREEN}make restart${NC}   - Restart container services"
+	@echo "${GREEN}make logs${NC}      - Show container logs"
 	@echo "${GREEN}make shell${NC}     - Connect to MongoDB shell"
 	@echo "${GREEN}make install${NC}   - Install dependencies"
 	@echo "${GREEN}make dev${NC}       - Start development server"
 	@echo "${GREEN}make clean${NC}     - Clean project (remove node_modules, etc.)"
 
-# MongoDB container commands
+init: env install
+	@echo "${GREEN}Project initialized successfully!${NC}"
+
+env:
+	@if [ ! -f .env ]; then \
+		echo "${YELLOW}Creating .env file from .env.example...${NC}"; \
+		cp .env.example .env; \
+		echo "${GREEN}.env file created successfully!${NC}"; \
+	else \
+		echo "${YELLOW}.env file already exists.${NC}"; \
+	fi
+
 up:
-	@echo "${GREEN}Starting MongoDB container...${NC}"
+	@echo "${GREEN}Starting container services...${NC}"
 	docker-compose up -d
-	@echo "${GREEN}MongoDB is running at ${DATABASE_HOST}:${DATABASE_PORT}${NC}"
+	@echo "${GREEN}Services are running${NC}"
 
 down:
-	@echo "${YELLOW}Stopping MongoDB container...${NC}"
+	@echo "${YELLOW}Stopping container services...${NC}"
 	docker-compose down
-
-purge:
-	@echo "${RED}Stopping and removing MongoDB container and volumes...${NC}"
-	docker-compose down -v
 
 restart: down up
 
 logs:
-	docker-compose logs -f mongodb
+	docker-compose logs -f
 
 shell:
 	@echo "${GREEN}Connecting to MongoDB shell...${NC}"
-	docker exec -it avanti-mongodb mongosh -u ${DATABASE_USER} -p ${DATABASE_PASSWORD} ${DATABASE_NAME}
+	docker exec -it avanti-mongodb mongosh -u $(if $(DATABASE_USER),$(DATABASE_USER),avanti) -p $(if $(DATABASE_PASSWORD),$(DATABASE_PASSWORD),avanti) $(if $(DATABASE_NAME),$(DATABASE_NAME),avanti)
 
-# Project commands
 install:
 	@echo "${GREEN}Installing dependencies...${NC}"
 	npm ci

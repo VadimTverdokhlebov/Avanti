@@ -15,16 +15,42 @@ interface IConfig {
   };
 }
 
+function getEnv(key: string, defaultValue?: string): string {
+  const value = process.env[key];
+  if (!value) {
+    if (defaultValue !== undefined) {
+      return defaultValue;
+    }
+    throw new Error(`Environment variable ${key} is not set`);
+  }
+  return value;
+}
+
+function getEnvNumber(key: string, defaultValue?: number): number {
+  const value = process.env[key];
+  if (!value) {
+    if (defaultValue !== undefined) {
+      return defaultValue;
+    }
+    throw new Error(`Environment variable ${key} is not set`);
+  }
+  const numValue = parseInt(value, 10);
+  if (isNaN(numValue)) {
+    throw new Error(`Environment variable ${key} is not a valid number`);
+  }
+  return numValue;
+}
+
 const config: IConfig = {
-  databaseHost: process.env.DATABASE_HOST!,
-  databasePort: parseInt(process.env.DATABASE_PORT!, 10),
-  databaseUser: process.env.DATABASE_USER!,
-  databasePassword: process.env.DATABASE_PASSWORD!,
-  databaseName: process.env.DATABASE_NAME!,
-  serverPort: parseInt(process.env.SERVER_PORT!, 10),
-  serverHost: process.env.SERVER_HOST!,
+  databaseHost: getEnv('DATABASE_HOST', 'localhost'),
+  databasePort: getEnvNumber('DATABASE_PORT', 27018),
+  databaseUser: getEnv('DATABASE_USER', 'avanti'),
+  databasePassword: getEnv('DATABASE_PASSWORD', 'avanti'),
+  databaseName: getEnv('DATABASE_NAME', 'avanti'),
+  serverPort: getEnvNumber('SERVER_PORT', 3000),
+  serverHost: getEnv('SERVER_HOST', 'localhost'),
   user: {
-    secretKey: process.env.SECRET_KEY!,
+    secretKey: getEnv('SECRET_KEY', 'defaultSecretKey'),
   },
 };
 
