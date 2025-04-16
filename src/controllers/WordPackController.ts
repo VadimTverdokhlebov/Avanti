@@ -22,17 +22,17 @@ export interface IPaginationSettings {
   limit: number;
 }
 export default class WordPackController {
-  static async getWordPack(req: Request, res: Response, next: NextFunction) {
+  static async getWordPack(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { searchValue, page, limit }: IPaginationSettings = req.body;
       const result = await WordPackRepository.getPaginateWordPacks(searchValue, page, limit);
-      return res.json({ status: 'get word pack successfully', result });
+      res.json({ status: 'get word pack successfully', result });
     } catch (error) {
-      return next(error);
+      next(error);
     }
   }
 
-  static async createWordPack(req: Request, res: Response, next: NextFunction) {
+  static async createWordPack(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { name, description, wordsId }: IWordPackData = req.body;
       const { email }: UserPayload = (req as ICustomRequest).user;
@@ -50,31 +50,31 @@ export default class WordPackController {
 
       const words = wordsDataModel.map(word => {
         return {
-          word: new mongoose.Types.ObjectId(word._id),
+          word: new mongoose.Types.ObjectId(String(word._id)),
         };
       });
 
       const wordPackModel: IWordPackModel = {
         name: name,
         description: description,
-        author: new mongoose.Types.ObjectId(userDataModel?.id),
+        author: new mongoose.Types.ObjectId(String(userDataModel?.id)),
         authorFullName: `${userDataModel?.firstName} ${userDataModel?.lastName}`,
         words: words,
       };
 
       const result = await WordPackRepository.createWordPack(wordPackModel);
 
-      return res.json({ status: 'create word pack successfully', result });
+      res.json({ status: 'create word pack successfully', result });
     } catch (error) {
-      return next(error);
+      next(error);
     }
   }
 
-  static async updateWordPack(req: Request, res: Response, next: NextFunction) {
+  static async updateWordPack(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      return res.json({ status: 'update word pack successfully' });
+      res.json({ status: 'update word pack successfully' });
     } catch (error) {
-      return next(error);
+      next(error);
     }
   }
 }

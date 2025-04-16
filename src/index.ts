@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import path from 'path';
 import config from './config';
 import connectToDataBase from './persistence/connect';
@@ -15,7 +15,16 @@ function startServer() {
     app.use(express.json());
     app.use(express.static(publicPath));
     app.use('/', indexRouter);
-    app.use(errorsMiddleware);
+    
+    // Используем error-handling middleware в соответствии с требованиями Express 5
+    app.use((
+      err: any,
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ) => {
+      errorsMiddleware(err as Error, req, res, next);
+    });
 
     app.listen(PORT, () => console.log(`Server listens http://${HOST}:${PORT}`));
   } catch (error) {

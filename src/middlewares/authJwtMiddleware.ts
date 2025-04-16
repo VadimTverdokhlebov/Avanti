@@ -12,9 +12,10 @@ export interface ICustomRequest extends Request {
   user: UserPayload;
 }
 
-export default function authJwtMiddleware(req: Request, res: Response, next: NextFunction) {
+export default function authJwtMiddleware(req: Request, res: Response, next: NextFunction): void {
   if (req.method === 'OPTIONS') {
-    return next();
+    next();
+    return;
   }
   try {
     const { authorization } = req.headers;
@@ -31,8 +32,8 @@ export default function authJwtMiddleware(req: Request, res: Response, next: Nex
 
     const decodetData = <UserPayload>jwt.verify(token, config.user.secretKey);
     (req as ICustomRequest).user = decodetData;
-    return next();
+    next();
   } catch (error) {
-    return next(error);
+    next(error);
   }
 }

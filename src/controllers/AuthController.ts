@@ -5,7 +5,7 @@ import ApiError from '../exception/ApiError';
 import { generateAccessToken } from '../helpers/jwt';
 import { IUser } from '../persistence/models/userModel';
 export default class AuthController {
-  static async registration(req: Request, res: Response, next: NextFunction) {
+  static async registration(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { firstName, lastName, email, password } = req.body;
       const checkEmail = await UserRepository.getUser(email);
@@ -25,13 +25,13 @@ export default class AuthController {
       const savedUser = await UserRepository.saveUser(user);
       const token = generateAccessToken(savedUser.id, savedUser.email);
 
-      return res.json({ message: 'registration successfully', savedUser, token });
+      res.json({ message: 'registration successfully', savedUser, token });
     } catch (error) {
-      return next(error);
+      next(error);
     }
   }
 
-  static async login(req: Request, res: Response, next: NextFunction) {
+  static async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { email, password } = req.body;
       const user = await UserRepository.getUser(email);
@@ -48,9 +48,9 @@ export default class AuthController {
 
       const token = generateAccessToken(user.id, user.email);
 
-      return res.json({ message: 'login successfully', token });
+      res.json({ message: 'login successfully', token });
     } catch (error) {
-      return next(error);
+      next(error);
     }
   }
 }

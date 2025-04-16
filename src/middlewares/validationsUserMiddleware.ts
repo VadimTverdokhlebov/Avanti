@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import ApiValidationError from '../exception/ApiValidationError';
 
-export default async function valaditionsMiddleware(req: Request, res: Response, next: NextFunction) {
+export default async function valaditionsMiddleware(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const errors: string[] = [];
 
@@ -52,6 +52,6 @@ export default async function valaditionsMiddleware(req: Request, res: Response,
 
     next();
   } catch (error) {
-    return next(error);
+    next(error);
   }
 }
