@@ -1,10 +1,10 @@
-import express, { RequestHandler } from 'express';
+import express from 'express';
 import WordPackController from '../controllers/WordPackController';
 
-const wordRouter = express.Router();
+const wordPackRouter = express.Router();
 
-wordRouter.get('/wordpack', WordPackController.getWordPack as RequestHandler);
-wordRouter.post('/wordpack', WordPackController.createWordPack as RequestHandler);
-wordRouter.put('/wordpack', WordPackController.updateWordPack as RequestHandler);
+wordPackRouter.get('/wordpack', WordPackController.getWordPack);
+wordPackRouter.post('/wordpack', WordPackController.createWordPack);
+wordPackRouter.put('/wordpack', WordPackController.updateWordPack);
 
-export default wordRouter;
+export default wordPackRouter;

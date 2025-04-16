@@ -1,5 +1,4 @@
-
-.PHONY: help up down restart logs shell install dev clean init env
+.PHONY: help up down restart logs shell install dev clean init env uninit
 
 GREEN = \033[0;32m
 YELLOW = \033[0;33m
@@ -23,8 +22,9 @@ help:
 	@echo "${GREEN}make install${NC}   - Install dependencies"
 	@echo "${GREEN}make dev${NC}       - Start development server"
 	@echo "${GREEN}make clean${NC}     - Clean project (remove node_modules, etc.)"
+	@echo "${GREEN}make uninit${NC}    - Reset project to uninitialized state"
 
-init: env install
+init: env install up
 	@echo "${GREEN}Project initialized successfully!${NC}"
 
 env:
@@ -58,7 +58,7 @@ install:
 	@echo "${GREEN}Installing dependencies...${NC}"
 	npm ci
 
-dev: up
+dev:
 	@echo "${GREEN}Starting development server...${NC}"
 	npm run dev
 
@@ -66,4 +66,13 @@ clean:
 	@echo "${YELLOW}Cleaning project...${NC}"
 	rm -rf node_modules
 	rm -rf dist
-	@echo "${GREEN}Project cleaned!${NC}" 
+	@echo "${GREEN}Project cleaned!${NC}"
+
+uninit: down
+	@echo "${YELLOW}Resetting project to uninitialized state...${NC}"
+	rm -rf node_modules
+	rm -rf dist
+	rm -f .env
+	docker-compose down -v
+	@echo "${RED}Warning: All containers, volumes, and project dependencies have been removed.${NC}"
+	@echo "${GREEN}Project reset to uninitialized state!${NC}" 
