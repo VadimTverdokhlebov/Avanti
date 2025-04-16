@@ -12,7 +12,14 @@ const logConfiguration = {
     winston.format.timestamp({
       format: 'MMM-DD-YYYY HH:mm:ss',
     }),
-    winston.format.printf(info => `${info.level}: message: ${info.message}: ${[info.timestamp]}`),
+    winston.format.printf(info => {
+      const logMessage = `${info.level}: message: ${info.message}: ${[info.timestamp]}`;
+      // Add stack trace if available
+      if (info.stack) {
+        return `${logMessage}\nStack trace: ${info.stack}`;
+      }
+      return logMessage;
+    }),
   ),
 };
 

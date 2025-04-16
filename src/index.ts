@@ -4,6 +4,27 @@ import config from './config';
 import connectToDataBase from './persistence/connect';
 import indexRouter from './routes/indexRouter';
 import errorsMiddleware from './middlewares/errorsMiddleware';
+import logger from './helpers/logger';
+
+// Global error handlers
+process.on('uncaughtException', (error) => {
+  logger.error({ 
+    message: `Uncaught Exception: ${error.message}`, 
+    stack: error.stack 
+  });
+  // Give logger some time to write to file before exiting
+  setTimeout(() => {
+    process.exit(1);
+  }, 1000);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error({ 
+    message: 'Unhandled Promise Rejection', 
+    reason: reason instanceof Error ? reason.message : reason,
+    stack: reason instanceof Error ? reason.stack : 'No stack trace available'
+  });
+});
 
 function startServer() {
   try {
@@ -29,7 +50,37 @@ function startServer() {
     app.listen(PORT, () => console.log(`Server listens http://${HOST}:${PORT}`));
   } catch (error) {
     console.error('Start server error:', error);
+    logger.error({ 
+      message: 'Start server error', 
+      stack: error instanceof Error ? error.stack : 'No stack trace available'
+    });
   }
 }
 
-connectToDataBase().then(() => startServer());
+// Попытка подключения к базе данных с повторными попытками
+async function init() {
+  let connected = false;
+  let attempts = 0;
+  const maxAttempts = 5;
+  
+  while (!connected && attempts < maxAttempts) {
+    attempts++;
+    console.log(`Attempting to connect to database (${attempts}/${maxAttempts})...`);
+    connected = await connectToDataBase();
+    
+    if (!connected && attempts < maxAttempts) {
+      console.log(`Connection failed. Retrying in 3 seconds...`);
+      // Ждем 3 секунды перед повторной попыткой
+      await new Promise(resolve => setTimeout(resolve, 3000));
+    }
+  }
+  
+  if (connected) {
+    startServer();
+  } else {
+    console.error(`Failed to connect to database after ${maxAttempts} attempts. Exiting.`);
+    process.exit(1);
+  }
+}
+
+init();

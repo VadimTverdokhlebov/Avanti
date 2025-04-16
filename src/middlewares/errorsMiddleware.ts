@@ -10,15 +10,26 @@ export default async function errorsMiddleware(
   next: NextFunction,
 ) {
   if (error instanceof ApiError) {
-    logger.error({ message: error.message, errors: error.errors });
+    logger.error({ 
+      message: error.message, 
+      errors: error.errors,
+      stack: error.stack 
+    });
     return res.status(error.status).json({ message: error.message, errors: error.errors });
   }
 
   if (error instanceof ApiValidationError) {
-    logger.error({ message: error.message, errors: error.errors });
+    logger.error({ 
+      message: error.message, 
+      errors: error.errors,
+      stack: error.stack 
+    });
     return res.status(400).json({ message: error.message, errors: error.errors });
   }
 
-  logger.error(error);
+  logger.error({ 
+    message: error.message || 'Unexpected error',
+    stack: error.stack
+  });
   return res.status(500).json({ message: 'Unexpected error' });
 }

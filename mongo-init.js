@@ -5,10 +5,10 @@ db.auth('root', 'rootpassword');
 const dbName = _getEnv('MONGO_INITDB_DATABASE');
 db = db.getSiblingDB(dbName);
 
-// Create user from environment variables
+// Create user with hardcoded values that match .env
 db.createUser({
-  user: '${DATABASE_USER}',
-  pwd: '${DATABASE_PASSWORD}',
+  user: 'avanti',
+  pwd: 'avanti',
   roles: [
     {
       role: 'readWrite',

@@ -1,21 +1,24 @@
 import mongoose from 'mongoose';
 import config from '../config';
+import logger from '../helpers/logger';
 
 export default async function connectToDataBase() {
-  const db = `mongodb://${config.databaseHost}:${config.databasePort}/${config.databaseName}`;
+  try {
+    // Используем root пользователя для подключения
+    const db = `mongodb://root:rootpassword@${config.databaseHost}:${config.databasePort}/${config.databaseName}?authSource=admin`;
 
-  const optionsDataBase = {
-    authSource: 'admin',
-    user: config.databaseUser,
-    pass: config.databasePassword,
-  };
+    mongoose.set('strictQuery', true);
 
-  mongoose.set('strictQuery', true);
-
-  mongoose
-    .connect(db)
-    .then(() => {
-      console.log('Connected to db');
-    })
-    .catch(error => console.log(error));
+    // Используем URI со встроенными данными аутентификации вместо отдельных опций
+    await mongoose.connect(db);
+    console.log('Connected to db');
+    return true;
+  } catch (error) {
+    logger.error({
+      message: 'Database connection error',
+      stack: error instanceof Error ? error.stack : 'No stack trace available',
+    });
+    console.error('Failed to connect to database:', error);
+    return false;
+  }
 }
